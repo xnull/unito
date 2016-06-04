@@ -1,17 +1,56 @@
+plugins {
+    id "com.jfrog.bintray" version "1.6"
+}
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'java'
 apply plugin: 'idea'
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
 
+group = 'bynull.unito'
+version = '1.0.0'
+
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'ch.qos.logback:logback-classic:1.1.7'
-    
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
+}
+
+publishing {
+    publications {
+        unito(MavenPublication) {
+            from components.java
+            groupId 'bynull.unito'
+            artifactId 'unito-core'
+            version '1.0.0'
+        }
+    }
+}
+
+bintray {
+    user = user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['unito']
+    pkg {
+        repo = 'maven'
+        name = 'unito-core'
+        userOrg = user
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/xnull/unito.git'
+
+        version {
+            name = '1.0.0-Final'
+            desc = 'Unito'
+            vcsTag = '1.0.0'
+        }
+    }
 }

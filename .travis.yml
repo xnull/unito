@@ -2,4 +2,4 @@ language: java
 jdk:
   - oraclejdk7
 after_success:
-  ./gradlew compileJava
+  ./gradlew -P$bintrayUser -P$bintrayApiKey clean bintrayUpload

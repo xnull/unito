@@ -6,6 +6,9 @@ apply plugin: 'maven-publish'
 apply plugin: 'java'
 apply plugin: 'idea'
 
+group = 'bynull.unito'
+version = '1.0.3'
+
 repositories {
     jcenter()
     mavenCentral()
@@ -13,9 +16,6 @@ repositories {
 
 sourceCompatibility = JavaVersion.VERSION_1_7
 targetCompatibility = JavaVersion.VERSION_1_7
-
-group = 'bynull.unito'
-version = '1.0.0'
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
@@ -25,13 +25,30 @@ dependencies {
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+task javadocJar (type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 publishing {
     publications {
         unito(MavenPublication) {
             from components.java
             groupId 'bynull.unito'
             artifactId 'unito-core'
-            version '1.0.0'
+            version project.version
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+
+            artifact (javadocJar) {
+                classifier = 'javadoc'
+            }
         }
     }
 }
@@ -48,9 +65,9 @@ bintray {
         vcsUrl = 'https://github.com/xnull/unito.git'
 
         version {
-            name = '1.0.0-Final'
+            name = project.version + '-Final'
             desc = 'Unito'
-            vcsTag = '1.0.0'
+            vcsTag = project.version
         }
     }
 }

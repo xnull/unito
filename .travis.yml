@@ -1,5 +1,9 @@
 language: java
+
 jdk:
-  - oraclejdk7
+- oraclejdk7
+env:
+  global:
+    secure: pFRvwUcsUYViZq/N6c8ATZRnH5a20MhdzGO1a3gbM7x6IvT2HAm+/5tZD08hoV6AuAt1jbyCb1gquNGiSXVTVCz/FOX8HGBc0yS78e8/+ZlIAFvvlPldXj2kNaPfYbvlk0e3Gg0ifHTWkD4dFe1G97E7azvTWcE3fMmaaFPKqzd1dJosMRZaXVSipzHQFzE+ALXJjPa9Yw0BWTVO0X2fC9WG7FwhKLbVouzm5iNmXo7bNdLzKXsjpAucNKWuXSF3iYF4F3lp8mv4uWrgeeMh6ONbVxx2SaqNOzxLpV5ebnUd8gpn1oSzM8FdH4EculcmUesiaHX+UJdYOH1fZF8l9O/4HA8vySD1vSLOi/uC/ALozgopMRal9Ge175aKXjcmG1TaHzXlv4BlvAxDaoGrJPFnZN1SXLNJ/wtzgG60OFsTdBAeQXvnfY2voBLvinPNZ+tCIMQHyoD5vVrcKqWUGHXVIOh37mjlXwGXUnM/XrhP/Dh6XBvCuI1+WYNyPmwbtY55SBiuY3sQLqjMwz55wbd03MJ6h+OxvaaWgrXW6tZ2GqJINKSyVS4wuRyLj8Z2sMlhN8giY8EaT+0qm2JWWXTbupc364i8nJ4bh+7fGY0DPCWvFMv6oHFq0UWkZU8syph+FfJBrT5Zy4u1/dUHZyVvymctRKuK0uqTnkHcV8M=
 after_success:
-  ./gradlew -P$bintrayUser -P$bintrayApiKey clean bintrayUpload
+  ./gradlew -P${bintrayUser} -P${bintrayApiKey} clean bintrayUpload

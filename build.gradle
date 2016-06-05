@@ -53,10 +53,10 @@ publishing {
     }
 }
 
-println("!!! user: ${bintrayUser}")
+println("!!! user: ${project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('bintrayUser')}")
 
 bintray {
-    user = user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('bintrayUser')
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('bintrayUser')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('bintrayApiKey')
     publications = ['unito']
     pkg {

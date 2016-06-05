@@ -63,6 +63,10 @@ bintray {
         userOrg = user
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/xnull/unito.git'
+        websiteUrl = 'https://github.com/xnull/unito'
+        issueTrackerUrl = 'https://github.com/xnull/unito/issues'
+        githubRepo = 'https://github.com/xnull/unito.git'
+        githubReleaseNotesFile = 'RELEASE.txt'
 
         version {
             name = project.version + '-Final'

@@ -53,8 +53,6 @@ publishing {
     }
 }
 
-println("!!! user: ${project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('bintrayUser')}")
-
 bintray {
     user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('bintrayUser')
     key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('bintrayApiKey')

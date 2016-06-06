@@ -8,36 +8,40 @@ import unito.api.Unito;
 /**
  * Created by bynull on 03.06.16.
  */
-abstract class AbstractUnito<T, R> implements Unito {
+public abstract class AbstractUnito<T, R> implements Unito<T, R> {
     protected Fixture<T> fixture;
     protected Action<T, R> action;
     protected Spec<T, R> spec;
 
-    public AbstractUnito() {
-        configure();
+    @Override
+    public void fixture(Fixture<T> fixture) {
+        this.fixture = fixture;
     }
 
-    public abstract void configure();
+    @Override
+    public void action(Action<T, R> action) {
+        this.action = action;
+    }
+
+    @Override
+    public void spec(Spec<T, R> spec) {
+        this.spec = spec;
+    }
 
     @Override
     public void test() throws Exception {
+        checkParameter("Fixture", fixture);
+        checkParameter("Action", action);
+        checkParameter("Spec", spec);
+
         T input = fixture.getData();
         R result = action.execute(fixture);
         spec.check(input, result);
     }
 
-    @Override
-    public Fixture fixture() {
-        return fixture;
-    }
-
-    @Override
-    public Action action() {
-        return action;
-    }
-
-    @Override
-    public Spec spec() {
-        return spec;
+    private void checkParameter(String parameterName, Object parameter) {
+        if (parameter == null) {
+            throw new IllegalStateException(parameterName + " does't set");
+        }
     }
 }

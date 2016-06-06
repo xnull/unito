@@ -10,5 +10,5 @@ public interface Unito<T, R> {
 
     Spec<T, R> spec();
 
-    void test();
+    void test() throws Exception;
 }

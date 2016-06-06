@@ -5,5 +5,5 @@ package unito.api;
  * Created by bynull on 03.06.16.
  */
 public interface Action<T, R> {
-    R execute(Fixture<T> fixture);
+    R execute(Fixture<T> fixture) throws Exception;
 }

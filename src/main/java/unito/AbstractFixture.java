@@ -12,13 +12,17 @@ public abstract class AbstractFixture<T> implements Fixture<T> {
     protected T data;
 
     public AbstractFixture() {
-        dependsOn();
-        setup();
+        try {
+            dependsOn();
+            init();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public abstract void setup();
+    public abstract void init() throws Exception;
 
-    public abstract List<? extends AbstractFixture<?>> dependsOn();
+    public abstract List<? extends AbstractFixture<?>> dependsOn() throws Exception;
 
     @Override
     public T getData() {

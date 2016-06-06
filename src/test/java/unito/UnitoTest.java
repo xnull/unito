@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class UnitoTest {
 
     @Test
-    public void test() {
+    public void test() throws Exception {
         new UnitoBox().test();
     }
 
@@ -36,7 +36,7 @@ public class UnitoTest {
         class TestFixture extends AbstractFixture<List<Integer>> {
 
             @Override
-            public void setup() {
+            public void init() throws Exception {
                 System.out.println("Init a fixture");
                 data = Arrays.asList(123, 456);
             }
@@ -50,7 +50,7 @@ public class UnitoTest {
         class TestAction implements Action<List<Integer>, Integer> {
 
             @Override
-            public Integer execute(Fixture<List<Integer>> fixture) {
+            public Integer execute(Fixture<List<Integer>> fixture) throws Exception {
                 System.out.println("Execute business logic");
                 return new Calculator().sum(fixture.getData());
             }

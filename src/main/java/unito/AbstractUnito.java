@@ -20,7 +20,7 @@ abstract class AbstractUnito<T, R> implements Unito {
     public abstract void configure();
 
     @Override
-    public void test() {
+    public void test() throws Exception {
         T input = fixture.getData();
         R result = action.execute(fixture);
         spec.check(input, result);

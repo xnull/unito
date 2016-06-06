@@ -5,5 +5,5 @@ package unito.api;
  * Created by bynull on 03.06.16.
  */
 public interface Spec<T, R> {
-    void check(T input, R result);
+    void check(T input, R result) throws Exception;
 }

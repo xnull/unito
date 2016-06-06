@@ -5,6 +5,5 @@ package unito.api;
  * Created by bynull on 03.06.16.
  */
 public interface Fixture<T> {
-    T getData();
-
+    T getData() throws Exception;
 }

@@ -6,6 +6,7 @@ import unito.api.Fixture;
 import unito.api.Spec;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +39,11 @@ public class UnitoTest {
             public void setup() {
                 System.out.println("Init a fixture");
                 data = Arrays.asList(123, 456);
+            }
+
+            @Override
+            public List<? extends AbstractFixture<?>> dependsOn() {
+                return Collections.emptyList();
             }
         }
 

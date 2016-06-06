@@ -13,7 +13,7 @@ public abstract class AbstractFixture<T> implements Fixture<T> {
         setup();
     }
 
-    abstract void setup();
+    public abstract void setup();
 
     @Override
     public T getData() {

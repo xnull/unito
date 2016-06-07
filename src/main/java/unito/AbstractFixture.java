@@ -11,16 +11,32 @@ import java.util.Objects;
  * Created by bynull on 03.06.16.
  */
 public abstract class AbstractFixture<T> implements Fixture<T> {
-    protected final T data;
-    protected final List<AbstractFixture<?>> dependencies = new ArrayList<>();
-    protected DataTransformer<T> transformer;
+    private static final DataTransformer<Object> DEFAULT_TRANSFORMER = new DataTransformer<Object>() {
+        @Override
+        public Object transform(Object data) {
+            return data;
+        }
+    };
 
-    protected AbstractFixture() {
+    protected T data;
+    protected final List<AbstractFixture<?>> dependencies = new ArrayList<>();
+    protected DataTransformer<T> transformer = (DataTransformer<T>) DEFAULT_TRANSFORMER;
+
+    @Override
+    public void apply() {
+        for (AbstractFixture<?> dependency : dependencies) {
+            dependency.apply();
+        }
+
         try {
-            this.data = transformer.transform(init());
+            this.data = transformer.transform(initInternal());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    T initInternal() throws Exception {
+        return init();
     }
 
     protected abstract T init() throws Exception;
@@ -30,7 +46,7 @@ public abstract class AbstractFixture<T> implements Fixture<T> {
         dependencies.add(dependency);
     }
 
-    protected void transformData(DataTransformer<T> transformer){
+    protected void transformData(DataTransformer<T> transformer) {
         this.transformer = transformer;
     }
 

@@ -34,6 +34,7 @@ public abstract class AbstractUnito<T, R> implements Unito<T, R> {
         checkParameter("Action", action);
         checkParameter("Spec", spec);
 
+        fixture.apply();
         T input = fixture.getData();
         R result = action.execute(fixture);
         spec.check(input, result);

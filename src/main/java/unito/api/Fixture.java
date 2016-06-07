@@ -6,4 +6,5 @@ package unito.api;
  */
 public interface Fixture<T> {
     T getData() throws Exception;
+    void apply();
 }

@@ -7,7 +7,6 @@ import unito.api.Spec;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -18,20 +17,14 @@ import static org.junit.Assert.assertEquals;
 public class UnitoTest {
 
     @Test
-    public void test() throws Exception {
-        final AbstractFixture<String> dependency = new AbstractFixture<String>() {
-            @Override
-            protected String init() throws Exception {
-                System.out.println("Dependency fixture!!!");
-                return null;
-            }
-        };
-
+    public void testWithFixture() throws Exception {
         new AbstractUnito<List<Integer>, Integer>() {{
-            fixture = (new TestFixture() {{
-                dependsOn(dependency);
+            fixture(new TestFixture() {{
+                dependsOn(new LowerLevelFixture() {{
+                    //we can customize the behavior of the fixture here
+                }});
 
-                //Change default test data
+                //Transform generated test data
                 transformData(new DataTransformer<List<Integer>>() {
                     @Override
                     public List<Integer> transform(List<Integer> data) {
@@ -39,9 +32,41 @@ public class UnitoTest {
                         return data;
                     }
                 });
+            }});
 
-                //We need a fixture post processor? Or just the postInit method?
-                //postInit();
+            action(new TestAction() {{
+                //we can modify business logic here
+            }});
+
+            spec(new TestSpec() {{
+                //Additional checks if needed, or override default checks
+            }});
+
+            test();
+        }};
+    }
+
+    @Test
+    public void testWithDataManager() throws Exception {
+        final TestFixture testFixture = new TestFixture() {{
+            dependsOn(new LowerLevelFixture() {{
+                //we can customize the behavior of the fixture here
+            }});
+
+            //Transform generated test data
+            transformData(new DataTransformer<List<Integer>>() {
+                @Override
+                public List<Integer> transform(List<Integer> data) {
+                    data.add(111);
+                    return data;
+                }
+            });
+        }};
+
+
+        new AbstractUnito<List<Integer>, Integer>() {{
+            fixture(new TestDataManager(){{
+                fixture = testFixture;
             }});
 
             action(new TestAction() {{
@@ -67,13 +92,35 @@ public class UnitoTest {
         }
     }
 
+    static class LowerLevelFixture extends AbstractFixture<String> {
+
+        @Override
+        protected String init() throws Exception {
+            System.out.println("Dependency fixture!!!");
+            return null;
+        }
+    }
+
+    static class TestDataManager extends DataManager<List<Integer>> {
+        private final DataStorage dataStorage = new DataStorage();
+
+        @Override
+        protected List<Integer> init() throws Exception {
+            System.out.println("Add an element to the data storage");
+            for (Integer el : fixture.getData()) {
+                dataStorage.add(el.toString());
+            }
+            return fixture.getData();
+        }
+    }
+
     static class TestAction implements Action<List<Integer>, Integer> {
         private final Calculator calc = new Calculator();
 
         @Override
         public Integer execute(Fixture<List<Integer>> fixture) throws Exception {
             System.out.println("Execute business logic");
-            return new Calculator().sum(fixture.getData());
+            return calc.sum(fixture.getData());
         }
     }
 
@@ -95,6 +142,14 @@ public class UnitoTest {
                 result += element;
             }
             return result;
+        }
+    }
+
+    public static class DataStorage {
+        private final List<String> storage = new ArrayList<>();
+
+        public void add(String element) {
+            storage.add(element);
         }
     }
 }

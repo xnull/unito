@@ -20,7 +20,9 @@ public abstract class AbstractFixture<T> implements Fixture<T> {
 
     protected T data;
     protected final List<AbstractFixture<?>> dependencies = new ArrayList<>();
+    @SuppressWarnings("unchecked")
     protected DataTransformer<T> transformer = (DataTransformer<T>) DEFAULT_TRANSFORMER;
+    private boolean applied;
 
     @Override
     public void apply() {
@@ -33,6 +35,7 @@ public abstract class AbstractFixture<T> implements Fixture<T> {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        this.applied = true;
     }
 
     T initInternal() throws Exception {
@@ -52,6 +55,9 @@ public abstract class AbstractFixture<T> implements Fixture<T> {
 
     @Override
     public T getData() {
+        if (!applied){
+            throw new IllegalStateException("Not initialized fixture");
+        }
         return data;
     }
 

@@ -115,7 +115,7 @@ public class UnitoTest {
     }
 
     static class TestAction implements Action<List<Integer>, Integer> {
-        private final Calculator calc = new Calculator();
+        final Calculator calc = new Calculator();
 
         @Override
         public Integer execute(Fixture<List<Integer>> fixture) throws Exception {
@@ -145,7 +145,7 @@ public class UnitoTest {
         }
     }
 
-    public static class DataStorage {
+        public static class DataStorage {
         private final List<String> storage = new ArrayList<>();
 
         public void add(String element) {
